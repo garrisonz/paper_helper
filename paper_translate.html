@@ -1,0 +1,67 @@
+
+<head>
+<style>
+body {
+}
+html,body {
+    background-color: #888;
+    padding:0;
+    margin:0;
+    height:100%;
+}
+
+.box {
+    background-color: white;
+    height: 100%;
+    width: 100%;
+    margin: auto;
+    font-size: 200%
+}
+
+</style>
+</head>
+<div class="box target" id="input" contenteditable="true"></div>
+
+<script>
+const target = document.querySelector('div.target');
+
+target.addEventListener('paste', (event) => {
+    let p = (event.clipboardData || window.clipboardData).getData('text');
+    p = p.replace(/-\r\n/g, "")
+    p = p.replace(/-\r/g, "")
+    p = p.replace(/-\n/g, "")
+    p = p.replace(/[\r\n]/g, " ");
+
+    const selection = window.getSelection();
+    if (!selection.rangeCount) return false;
+    selection.deleteFromDocument();
+    selection.getRangeAt(0).insertNode(document.createTextNode(p));
+
+    event.preventDefault();
+});
+
+function t() {
+    var q = "";
+    for (var i = 0; i < p.length; i++){
+        if (p[i-1] && p[i-1] == '$' && p[i] == '$'){
+            q += 'A';
+        }
+        q += p[i];
+    }
+    p = q;
+
+    p = p.replace(/\r\n\r\n/g, "$$");
+    p = p.replace(/[\r\n]/g, " ");
+    p = p.replace(/"$$"/g, "<br>");
+
+    var q = "";
+    for (var i = 0; i < p.length; i++){
+        if (p[i-1] && p[i+1] && p[i-1] == '$' && p[i] == 'A' && p[i+1] == '$'){
+            continue;
+        }
+        q += p[i];
+    }
+    p = q;
+}
+</script>
+
